@@ -20,7 +20,7 @@ object SBTLatexPlugin extends Plugin {
 
   val latexSourceFileDefinition =
     latexSourceFile <<= latexSourceDirectory map { latexSourceDirectory =>
-      val files = (latexSourceDirectory ** "*.tex").get
+      val files = (latexSourceDirectory ** "*.tex").get.filterNot(_.getPath.contains("#"))
       assert(
         files.size == 1,
         "There must be exactly one main .tex source. Found: " + files.toList.toString)
