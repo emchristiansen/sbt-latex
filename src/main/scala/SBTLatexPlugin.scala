@@ -1,11 +1,10 @@
 import sbt._
 import Keys._
 
-object SBTLatexPlugin extends Plugin {
-  // TODO: Proper captialization for Latex.
+object SBTLaTeXPlugin extends Plugin {
   val latexSourceDirectory = TaskKey[File](
     "latex-source-directory",
-    "Latex source directory")
+    "LaTeX source directory")
 
   val latexSourceDirectoryDefinition =
     latexSourceDirectory <<= baseDirectory map { baseDirectory =>
@@ -16,7 +15,7 @@ object SBTLatexPlugin extends Plugin {
 
   val latexSourceFile = TaskKey[File](
     "latex-source-file",
-    "Latex source file")
+    "LaTeX source file")
 
   val latexSourceFileDefinition =
     latexSourceFile <<= latexSourceDirectory map { latexSourceDirectory =>
@@ -31,7 +30,7 @@ object SBTLatexPlugin extends Plugin {
 
   val latexUnmanagedBase = TaskKey[File](
     "latex-unmanaged-base",
-    "Directory external Tex source files needed to build the PDF, e.g. *.sty, *.bst")
+    "Directory containing external files needed to build the PDF, e.g. *.sty, *.bst")
 
   val latexUnmanagedBaseDefinition =
     latexUnmanagedBase <<= unmanagedBase map identity
@@ -49,7 +48,7 @@ object SBTLatexPlugin extends Plugin {
 
   val latex = TaskKey[Unit](
     "latex",
-    "Compiles latex source to PDF")
+    "Compiles LaTeX source to PDF")
 
   val latexDefinition = latex <<=
     (latexSourceFile, latexUnmanagedBase, latexResourceDirectory, cacheDirectory, target, streams) map {
@@ -73,6 +72,8 @@ object SBTLatexPlugin extends Plugin {
 
         // Build the PDF.
         val pdflatex = Process(
+          // These flags tell pdflatex to quit if there's an error, not drop
+          // into some arcane, ancient, pdflatex shell.
           "pdflatex" :: "-file-line-error" :: "-halt-on-error" :: latexSourceFile.getName :: Nil,
           latexCache)
 
@@ -109,7 +110,7 @@ object SBTLatexPlugin extends Plugin {
   
   override val settings = Seq(
     sbtPlugin := true,
-    name := "SBTLatexPlugin",
+    name := "SBTLaTeXPlugin",
     latexSourceDirectoryDefinition,
     latexSourceFileDefinition,
     latexUnmanagedBaseDefinition,
