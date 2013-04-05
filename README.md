@@ -2,9 +2,9 @@ SBT plugin to build LaTeX projects with SBT! Inspired by [latex-cv](https://gith
 
 Features:
 
-1. Manages the ugly intermediate TeX files so you don't have to look at them.
-2. Can automatically rebuild your project whenever a file changes:
- 1. Start `sbt` and run `~latex`.
+  1. Manages the ugly intermediate TeX files so you don't have to look at them.
+  2. Can automatically rebuild your project whenever a file changes:
+    1. Start `sbt` and run `~latex`.
 
 To use:
 
