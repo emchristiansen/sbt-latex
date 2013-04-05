@@ -6,9 +6,10 @@ version := "0.1"
 
 description := "SBT plugin to build LaTeX projects."
 
-licenses := Seq("MIT" -> url("http://opensource.org/licenses/MIT"))
+licenses := Seq("Public domain / CC0" -> 
+  url("http://creativecommons.org/publicdomain/zero/1.0/"))
 
-homepage := Some(url("https://github.com/emchristiansen/SBTLatex"))
+homepage := Some(url("https://github.com/emchristiansen/sbt-latex"))
 
 //////////////////////////////////
 
