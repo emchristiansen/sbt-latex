@@ -4,12 +4,12 @@ Features:
 
 1. Manages the ugly intermediate TeX files so you don't have to look at them.
 2. Can automatically rebuild your project whenever a file changes:
- 1. Start `sbt` and run `~latex`.
+    1.1 Start `sbt` and run `~latex`.
 
 To use:
 
 1. Make sure `pdflatex` and `bibtex` are installed, as well as any LaTeX libraries you may want:
- 1. In Ubuntu, you can install everything with `sudo apt-get install texlive-full`.
+    1.1 In Ubuntu, you can install everything with `sudo apt-get install texlive-full`.
 2. Add the command `addSbtPlugin("emchristiansen" % "sbt-latex" % "0.1")` to `project/plugins.sbt`.
 3. Expected file locations:
  1. Place your main `.tex` source in `src/main/latex/`.
