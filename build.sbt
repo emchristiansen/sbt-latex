@@ -11,13 +11,13 @@ licenses := Seq("Public domain / CC0" ->
 
 homepage := Some(url("https://github.com/emchristiansen/sbt-latex"))
 
-//////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 sbtPlugin := true
 
 scalacOptions := Seq("-deprecation", "-unchecked", "-optimize")
 
-/////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 publishTo <<= (version) { version: String =>
    val scalasbt = "http://repo.scala-sbt.org/scalasbt/"
@@ -31,4 +31,3 @@ publishTo <<= (version) { version: String =>
 publishMavenStyle := false
 
 credentials += Credentials(Path.userHome / ".ivy2" / ".sbtcredentials")
-
