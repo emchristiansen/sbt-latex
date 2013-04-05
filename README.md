@@ -1,8 +1,12 @@
 SBT plugin to build LaTeX projects with SBT! Inspired by [latex-cv](https://github.com/stuhood/latex-cv).
 
-To use:
+Features:
+1. Manages the ugly intermediate TeX files so you don't have to look at them.
+2. Can automatically rebuild your project whenever a file changes:
+ 1. Start `sbt` and run `~latex`.
 
-1. Make sure `pdflatex` and `bibtex` are installed, as well as any LaTeX libraries you may want.
+To use:
+1. Make sure `pdflatex` and `bibtex` are installed, as well as any LaTeX libraries you may want:
  1. In Ubuntu, you can install everything with `sudo apt-get install texlive-full`.
 2. Add the command `addSbtPlugin("emchristiansen" % "sbt-latex" % "0.1")` to `project/plugins.sbt`.
 3. Expected file locations:
