@@ -14,7 +14,7 @@ To use:
     * Place resources, like `.bib` files and figures, in `src/main/resources/`.
     * Place external dependencies, like `.sty` files, in `lib/`.
 
-You can also use the [g8 template](https://github.com/emchristiansen/SBTLatexTemplate.g8) to auto-generate a LaTeX project.
+You can also use the [g8 template](https://github.com/emchristiansen/sbt-latex.g8) to auto-generate a LaTeX project.
 
 License: Public domain / I don't care / [CC0](http://creativecommons.org/publicdomain/zero/1.0/).
 
