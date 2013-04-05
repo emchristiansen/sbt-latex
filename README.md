@@ -1,10 +1,17 @@
 SBT plugin to build LaTeX projects with SBT! Inspired by [latex-cv](https://github.com/stuhood/latex-cv).
 
-This tool calls native LaTeX tools (pdflatex, bibtex), so install those first.
+To use:
 
-You probably want to start with the [project template](https://github.com/emchristiansen/SBTLatexTemplate.g8).
+1. Make sure `pdflatex` and `bibtex` are installed, as well as any LaTeX libraries you may want.
+  1. In Ubuntu, you can install everything with `sudo apt-get install texlive-full`.
+2. Add the command `addSbtPlugin("emchristiansen" % "sbt-latex" % "0.1")` to `project/plugins.sbt`.
+3. Expected file locations:
+  1. Place your main `.tex` source in `src/main/latex/`.
+  2. Place resources, like `.bib` files and figures, in `src/main/resources/`.
+  3. Place external dependencies, like `.sty` files, in `lib/`.
 
-License: Public domain / I don't care
+You can also use the [g8 template](https://github.com/emchristiansen/SBTLatexTemplate.g8) to auto-generate a LaTeX project.
 
-TODO:
-1. Publish to online repository, so users don't need to build this themselves.
+License: Public domain / I don't care / [CC0](http://creativecommons.org/publicdomain/zero/1.0/).
+
+

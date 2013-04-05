@@ -30,4 +30,4 @@ publishTo <<= (version) { version: String =>
 
 publishMavenStyle := false
 
-credentials += Credentials(Path.userHome / ".ivy2" / ".sbtcredentials")
+credentials += Credentials(Path.userHome / ".ivy2" / "sbtcredentials")
