@@ -1,4 +1,4 @@
-SBT plugin to build LaTeX projects with SBT! Inspired by [latex-cv](https://github.com/stuhood/latex-cv).
+[SBT](https://github.com/paulp/sbt-extras) plugin to build LaTeX projects with SBT! Inspired by [latex-cv](https://github.com/stuhood/latex-cv).
 
 Features:
   * Manages the ugly intermediate TeX files so you don't have to look at them.
