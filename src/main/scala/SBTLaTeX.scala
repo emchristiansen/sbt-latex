@@ -42,7 +42,7 @@ object SBTLaTeX extends Plugin {
     "Directory containing files needed to build the PDF, e.g. *.bib, *.png")
 
   val latexResourceDirectoryDefinition =
-    latexResourceDirectory <<= (resourceDirectory in Compile) map identity
+    latexResourceDirectory <<= (resourceDirectory in Compile) map identity   
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -51,16 +51,19 @@ object SBTLaTeX extends Plugin {
     "Compiles LaTeX source to PDF")
 
   val latexDefinition = latex <<=
-    (latexSourceFile, latexUnmanagedBase, latexResourceDirectory, cacheDirectory, target, streams) map {
-      (latexSourceFile, latexUnmanagedBase, latexResourceDirectory, cacheDirectory, target, streams) =>
+    (latexSourceDirectory, latexSourceFile, latexUnmanagedBase, latexResourceDirectory, cacheDirectory, target, streams) map {
+      (latexSourceDirectory, latexSourceFile, latexUnmanagedBase, latexResourceDirectory, cacheDirectory, target, streams) =>
         // Create the cache directory and copy the source files and dependencies
         // there.
         val latexCache = cacheDirectory / "latex"
         IO.createDirectory(latexCache)
 
+        // Copy the files from the LaTeX source directory.
+        IO.copyDirectory(latexSourceDirectory, latexCache)
+
         // Copy the main file over.
-        val sourceInCache = latexCache / latexSourceFile.getName
-        IO.copyFile(latexSourceFile, sourceInCache)
+        // val sourceInCache = latexCache / latexSourceFile.getName
+        // IO.copyFile(latexSourceFile, sourceInCache)
 
         // Copy the external Tex source files.
         IO.copyDirectory(latexUnmanagedBase, latexCache)
