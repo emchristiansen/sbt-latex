@@ -8,7 +8,7 @@ Features:
 To use:
   * Make sure `pdflatex` and `bibtex` are installed, as well as any LaTeX libraries you may want.
     * In Ubuntu, you can install everything with `sudo apt-get install texlive-full`.
-  * Add the command `addSbtPlugin("emchristiansen" % "sbt-latex" % "0.1")` to `project/plugins.sbt`.
+  * Add the command `addSbtPlugin("emchristiansen" % "sbt-latex" % "0.1.1")` to `project/plugins.sbt`.
   * Expected file locations:
     * Place your main `.tex` source in `src/main/latex/`.
     * Place resources, like `.bib` files and figures, in `src/main/resources/`.
