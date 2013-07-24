@@ -13,17 +13,20 @@ object SBTLaTeX extends Plugin {
 
   //////////////////////////////////////////////////////////////////////////////
 
-  val latexSourceFile = TaskKey[File](
-    "latex-source-file",
-    "LaTeX source file")
+  val latexSourceFiles = TaskKey[Seq[File]](
+    "latex-source-files",
+    "LaTeX source files")
 
   val latexSourceFileDefinition =
-    latexSourceFile <<= latexSourceDirectory map { latexSourceDirectory =>
+    latexSourceFiles <<= latexSourceDirectory map { latexSourceDirectory =>
       val files = (latexSourceDirectory ** "*.tex").get.filterNot(_.getPath.contains("#"))
+      //      assert(
+      //        files.size == 1,
+      //        "There must be exactly one main .tex source. Found: " + files.toList.toString)
       assert(
-        files.size == 1,
-        "There must be exactly one main .tex source. Found: " + files.toList.toString)
-      files.head
+        files.size >= 1,
+        "There must be at least one main .tex source.")
+      files
     }
 
   //////////////////////////////////////////////////////////////////////////////
@@ -42,7 +45,7 @@ object SBTLaTeX extends Plugin {
     "Directory containing files needed to build the PDF, e.g. *.bib, *.png")
 
   val latexResourceDirectoryDefinition =
-    latexResourceDirectory <<= (resourceDirectory in Compile) map identity   
+    latexResourceDirectory <<= (resourceDirectory in Compile) map identity
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -51,8 +54,8 @@ object SBTLaTeX extends Plugin {
     "Compiles LaTeX source to PDF")
 
   val latexDefinition = latex <<=
-    (latexSourceDirectory, latexSourceFile, latexUnmanagedBase, latexResourceDirectory, cacheDirectory, target, streams) map {
-      (latexSourceDirectory, latexSourceFile, latexUnmanagedBase, latexResourceDirectory, cacheDirectory, target, streams) =>
+    (latexSourceDirectory, latexSourceFiles, latexUnmanagedBase, latexResourceDirectory, cacheDirectory, target, streams) map {
+      (latexSourceDirectory, latexSourceFiles, latexUnmanagedBase, latexResourceDirectory, cacheDirectory, target, streams) =>
         // Create the cache directory and copy the source files and dependencies
         // there.
         val latexCache = cacheDirectory / "latex"
@@ -73,44 +76,45 @@ object SBTLaTeX extends Plugin {
 
         ////////////////////////////////////////////////////////////////////////
 
-        // Build the PDF.
-        val pdflatex = Process(
-          // These flags tell pdflatex to quit if there's an error, not drop
-          // into some arcane, ancient, pdflatex shell.
-          "pdflatex" :: "-file-line-error" :: "-halt-on-error" :: latexSourceFile.getName :: Nil,
-          latexCache)
+        for (latexSourceFile <- latexSourceFiles) {
+          // Build the PDF.
+          val pdflatex = Process(
+            // These flags tell pdflatex to quit if there's an error, not drop
+            // into some arcane, ancient, pdflatex shell.
+            "pdflatex" :: "-file-line-error" :: "-halt-on-error" :: latexSourceFile.getName :: Nil,
+            latexCache)
 
-        val bibtex = Process(
-          "bibtex" :: latexSourceFile.getName.replace(".tex", ".aux") :: Nil,
-          latexCache)
+          val bibtex = Process(
+            "bibtex" :: latexSourceFile.getName.replace(".tex", ".aux") :: Nil,
+            latexCache)
 
-        // TODO: Handle build error.
-        (pdflatex !)
-        (bibtex !)
-        (pdflatex !)
-        (pdflatex !)
+          // TODO: Handle build error.
+          (pdflatex !)
+          (bibtex !)
+          (pdflatex !)
+          (pdflatex !)
 
-        ////////////////////////////////////////////////////////////////////////
+          //////////////////////////////////////////////////////////////////////
 
-        // Copy it to the final destination.
-        val pdfName = latexSourceFile.getName.replace(".tex", ".pdf")
-        IO.copyFile(latexCache / pdfName, target / pdfName)
-        streams.log.info("PDF written to %s.".format(target / pdfName))
+          // Copy it to the final destination.
+          val pdfName = latexSourceFile.getName.replace(".tex", ".pdf")
+          IO.copyFile(latexCache / pdfName, target / pdfName)
+          streams.log.info("PDF written to %s.".format(target / pdfName))
+        }
     }
 
   //////////////////////////////////////////////////////////////////////////////
 
   val watchSourcesDefinition = watchSources <++=
-    (latexSourceFile, latexUnmanagedBase, latexResourceDirectory) map {
-      (latexSourceFile, latexUnmanagedBase, latexResourceDirectory) =>
-        Seq(
-          latexSourceFile,
+    (latexSourceFiles, latexUnmanagedBase, latexResourceDirectory) map {
+      (latexSourceFiles, latexUnmanagedBase, latexResourceDirectory) =>
+        latexSourceFiles ++ Seq(
           latexUnmanagedBase,
           latexResourceDirectory)
     }
 
   //////////////////////////////////////////////////////////////////////////////
-  
+
   override val settings = Seq(
     sbtPlugin := true,
     name := "sbt-latex",

@@ -2,7 +2,7 @@ name := "sbt-latex"
 
 organization := "emchristiansen"
 
-version := "0.1.1"
+version := "0.1.2"
 
 description := "SBT plugin to build LaTeX projects."
 
